@@ -1,0 +1,150 @@
+<html>
+    <head>
+        <style>
+            h1, nav{
+                background-color: lightgreen;
+                height: 40px;
+                width: 90%;
+                text-align: center;
+            }
+            .section{
+                display: inline-block;
+                margin:4px;
+                width: 35%;
+                background-color: darkkhaki;
+                vertical-align: top;
+            }
+            a{
+                width: 190px;
+                height: 30px;
+                padding: 4px;
+                margin:4px;
+                align-content: center;
+                margin-left:14%;
+            }
+        </style>
+        <script src="../REST-main/data.json"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script>    
+            const url = "http://localhost:1234/users";
+            function saveChanges(){
+                let obj ={};
+             
+                obj.UserId = $("#UId").text();
+                obj.UserName = $("#UserName").val();
+                obj.UserPlace = $("#UserPlace").val();
+                obj.UserGmail = $("#UserGmail").val();
+                obj.UserContact = $("#UserContact").val();
+                //Use this function for Put and post operation
+                $.ajax({
+                    method : 'PUT',
+                    url : url,
+                    data : obj,
+                    success : (data)=>{
+                        alert(data);
+                    }
+                })
+             
+            }
+            function findRecord(){
+                $("div").hide(2000);
+                $("div:eq(1)").show(2000);
+                const id = $(this).attr("uId");
+                let temp = url + "/" + id;
+                $.get(temp, (data) => {
+                    let user = JSON.parse(data);
+                    $("#UId").text(user.UserId);
+                    $("#UserName").val(user.UserName);
+                    $("#UserPlace").val(user.UserPlace);
+                    $("#UseGmail").val(user.UserGmail);
+                    $("#UserContact").val(user.UserContact);
+                })
+            }
+            function showAddDiv(){
+                $("div").hide(2000);
+                $("div:last").show(2000);
+            }
+
+            function addChanges(){
+                
+                let obj = { };
+                debugger;
+               
+                obj.UserId = $("#newId").val();
+                obj.UserName = $("#newName").val();
+                obj.UserPlace = $("#newPlace").val();
+                obj.UserGmail = $("#newGmail").val();
+                obj.UserContact = $("#newContact").val();
+                $.post(url, obj, (data)=>{
+                    alert(data);
+                    $("input").val("");
+                    $("div").hide(2000);
+                })
+                //call the post operation of the jquery ajax....
+                //display the message
+            }
+            function populateData(){
+                //Show the Div
+                $("div:first").show(2000);
+                $("table").find("tr:gt(0)").remove();
+                //Get the data from the server
+                $.get(url, (data)=>{
+                    let array = JSON.parse(data);
+                    for (const user of array) {
+                        const row = `<tr><td>${user.UserId}</td><td>${user.UserName}</td><td>${user.UserPlace}</td><td>${user.UserGmail}</td><td>${user.UserContact}</td><td><a href="#" class="edit" uId = ${user.UserId}>Edit</a></tr>`
+                        $("table").append(row);
+                    }
+                    $(".edit").click(findRecord);               
+                })
+                //Populate the data into the table
+                
+            }        
+            function init(){
+                $("div").hide(2000);
+                $("a:first").click(populateData);
+                $("a:eq(1)").click(showAddDiv);
+                $("button:eq(0)").click(saveChanges);
+                $("button:eq(1)").click(addChanges);
+            }
+            $(document).ready(init);
+        </script>
+    </head>
+    <body>
+        <h1>User Monitoring System</h1>
+        <nav>
+            <a href="#">Show All</a>
+            <a href="#">Add New</a>
+            <a href="#">About Us</a>
+        </nav>
+        <div class="section">
+            <table border="1">
+                <tr>
+                    <th>User ID</th>
+                    <th>User Name</th>
+                    <th>User Place</th>
+                    <th>User Gmail</th>
+                    <th>User Contact</th>
+                    <th>Options</th>
+                </tr>
+            </table>
+        </div>
+        <div class="section">
+            <h2>Details of the User</h2>
+            <p>User ID : <input id="UId"/></p>
+            <p>User Name : <input id="UserName"/></p>
+            <p>User Place : <input id="UserPlace"/></p>
+            <p>User Gmail : <input id="UserGmail"/></p>
+            <p>User Contact : <input id="UserContact"/></p>
+            <p><button>Save Changes</button></p>
+        </div>
+        <div class="section">
+            <h2>Register New User</h2>
+            <p>User ID : <input id="newId"/></p>
+            <p>User Name : <input id="newName" /></p>
+            <p>User Place : <input id="newPlace" /></p>
+            <p>User Gmail : <input id="newGmail" /></p>
+            <p>User Contact : <input id="newContact" /></p>
+            <p><button>Add User</button></p>
+        </div>
+    </body>
+</html>
