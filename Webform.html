@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebForm</title>
+    <script>
+        function validate(){
+            var names=['kutty','nani','lucky'];
+            var flag=1;
+            var smaller=/[a-z]g/;
+            var bigger=/[A-Z]g/;
+            var numerals=/[0-9]g/;
+            var month=/[a-z]||[A-Z]g/;
+            var year=/[0-9]||[100-1000]||[1000-2000]g/;
+            var specialcharacters=/[!@#$%^&*(),.?/\~]g/;
+            if(flag==1)
+            {
+                if(document.getElementById("name").value.length<5||document.getElementById("name").value.length>15)
+                {
+                    flag++;
+                    alert("username should be in the length of 5 to 15");
+                }
+                elseif(!document.getElementById("password").value.match(smaller)||!document.getElementById("password").value.match(bigger)||!document.getElementById("password").value.match(numerals)||!document.getElementById("pasword").value.match(specialcharacters))
+                {
+                    flag++;
+                    alert("Invalid password!");
+                    alert("Please use all the characters that we are mentioned");
+                    alert("Try Again");
+                }
+                elseif(!document.getElementById("Email-id").value.match(/[a-z A-Z 0-9]+[@]+[a-z]+[.]+[A-Z]/))
+                {
+                    flag++;
+                    alert("Invalid Email-id");
+                }
+                elseif(!document.getElementById("ContactNumber").value.length!=10)
+                {
+                    flag++;
+                    alert("Your Contact Number must have 10 digits");
+                }
+                elseif(!document.getElementById("Date").value.match(month)||!document.getElementById("Date").value.match(year)||!document.getElementById("Date").value.match(numerals))
+                {
+                    flag++;
+                    alert("Invalid Date!")
+                    alert("Please choose month, year and date correctly!");
+                    alert("OOPS! Try Again...");
+                }
+            }
+            else if( flag == 1)
+            {
+                for(let i =0; i<names.length; i++)
+                {
+                    if(document.getElementById("name").value == names[i]){
+                        alert("name already exists");
+                        }
+                }
+            }
+    </script>
+</head>
+<body>
+    <form>
+        Name<input type="text", id="name"> <br>
+        Password<input type="text", id="password"> <br>
+        Email<input type="text", id="Email-id"> <br>
+        Contact<input type="text", id="ContactNumber"> <br>
+        Date<input type="text", id="date"> <br>
+        Month<input type="text", id="month"> <br>
+        Year<input type="text", id="year"> <br>
+        <input type="submit", id="OnClick"> <br>
+        <p index="Submit There"></p>
+    </form>
+</body>
+</html>
